@@ -1,21 +1,16 @@
 from message_engine import MessageBot
 from langid import classify
+from translator import Translator
 
 class MesssageHandler:
     message_cooldown = 5.0  # in seconds
-    message_bot = MessageBot()
     
-    def __init__(self):
-        pass
-
     
-    # async def change_language(self, language):
-    #     if language not in self.message_bot.LANGUAGES.keys():
-    #         raise ValueError(f"Language {language} is not supported.")
-    #     self.message_bot.language = self.message_bot.LANGUAGES[language]
-    #     return f"Language changed to {self.message_bot.language[0]}."
-
-
+    def __init__(self, translator: Translator = None):
+        self.translator = translator or Translator(locale_folder='localization', default_language='pl')
+        self.message_bot = MessageBot(translator=self.translator)
+    
+    
     async def is_message_language_supported(self, message):
         lang, _ = classify(message.content)
         if lang not in self.message_bot.language:
@@ -29,5 +24,3 @@ class MesssageHandler:
         return response
     
 
-
-    

@@ -2,12 +2,14 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 from enum import Enum
+from translator import Translator
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Get the OpenAI API key from environment variables
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 
 class ModelType(Enum):
     GPT_4_1 = "gpt-4.1"
@@ -31,30 +33,20 @@ class ModelType(Enum):
 
 
 class MessageBot:
-    BASE_INSTRUCTION = """Wcielasz się w rolę Pana Profesora Szumnego, osobę pełną pasji i wiedzy na różne tematy, posiadającego dość silne i kontrowersyjne opinie.
-Uwielbiasz dzilić się swoją wiedzą w formie ciekawostek.
-Na podstawie otrzymanego promptu, wychwycasz z niego jedno ze słów kluczowych i na jego podstawie generujesz odpowiedź. 
-Odpowiedź ma być opisem, historią lub ciekawostką na dany temat. Odpowiedź powinna być obszerna - zawierać min. 250 znaków. 
-W swojej odpowiedzi zawsze zachowujesz się w sposób kulturalny i pełny szacunku.
-W odpowiedziach zwracasz się pół-formalnie jak wykładowca do studentów używając zwrotów: \"Szanowni Państow\", \"Drodzy Państwo\", \"Proszę Państwa\", itp.
-Swoje odpowiedzi zawsze zaczynasz zwrotami: \"Czy wiedzą Państowo, że...\", \"Czy słyszeli Państwo o...\", \"Proszę Państa...\", \"Nie wiem czy Państwo wiedzą...\" itp.
-W odpowiedziach często wykorzystujesz różne formy stylistyczne, takie jak metafory, porównania, aliteracje, itp.
-Odpowidasz na pytania zawsze w języku polskim, używając poprawnej polszczyzny."""
-    LANGUAGES = {
-        "en":("English","en-US","en"),
-        "pl":("Polish","pl-PL","pl"),
-    }
-
-
-    def __init__(self):
+    def __init__(self,translator: Translator = None):
         if not OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
+        
+        self.translator = translator or Translator(locale_folder='localization', default_language='pl')
+        self.base_instruction = self.translator.message_bot['base_instruction']
+        self.languages = self.translator.translations.keys()
+        
         self.client = OpenAI(api_key=OPENAI_API_KEY)
         self.model = ModelType.get_model("gpt-4.1-mini")
         self.messages = [
-            {"role":"developer", "content": self.BASE_INSTRUCTION},
+            {"role":"developer", "content": self.base_instruction},
         ]
-        self.language = self.LANGUAGES["pl"]
+        self.language = self.translator.default_language
     
 
     def generate_response(self, prompt):
@@ -66,7 +58,14 @@ Odpowidasz na pytania zawsze w języku polskim, używając poprawnej polszczyzny
         return response.output_text
     
 
-    
+    def change_language(self, language):
+        if language not in self.languages:
+            raise ValueError(self.translator.message_handler['language_not_supported'].format(language=self.translator.languages[language]))
+        self.language = language
+        self.translator.set_language(language)
+        self.messages[0]["content"] = self.base_instruction
+
+
 if __name__ == "__main__":
     message_bot = MessageBot()
     print(message_bot.generate_response("zapraszam zainteresowanych do wojska"))

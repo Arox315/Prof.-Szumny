@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 
 from message_handler import MesssageHandler
+from translator import Translator
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,7 +18,10 @@ intents.message_content = True  # Enable message content intent
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-message_handler = MesssageHandler()
+translator = Translator(locale_folder='localization', default_language='pl')
+
+message_handler = MesssageHandler(translator=translator)
+
 
 @bot.event
 async def on_ready():
@@ -27,7 +31,12 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    # Ignore messages from the bot itself
     if message.author == bot.user:
+        return
+    
+    # Ignore messages that start with the command prefix
+    if not message.content.startswith('/'):
         return
     
     is_lang_supported = await message_handler.is_message_language_supported(message)
@@ -45,6 +54,18 @@ async def hello(ctx):
 @bot.command()
 async def wave(ctx, to: discord.User = commands.Author):
     await ctx.send(f'Hello {to.mention} :wave:')
+
+
+@bot.command(name='language', description=translator.discord['commands']['change_language']['description'])
+async def change_language(ctx, language: str):
+    try:
+        await translator.set_language(language)
+        await ctx.send(translator.translator['language_changed'].format(language=translator.languages[language]))
+    except ValueError as err:
+        await ctx.send(str(err))
+
+
+
 
 
 
