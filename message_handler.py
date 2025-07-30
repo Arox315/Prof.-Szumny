@@ -11,6 +11,10 @@ class MesssageHandler:
         self.message_bot = MessageBot(translator=self.translator)
     
     
+    async def change_language(self, language):
+        self.message_bot.change_language(language)
+
+
     async def is_message_language_supported(self, message):
         lang, _ = classify(message.content)
         if lang not in self.message_bot.language:

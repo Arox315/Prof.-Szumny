@@ -60,6 +60,7 @@ async def wave(ctx, to: discord.User = commands.Author):
 async def change_language(ctx, language: str):
     try:
         await translator.set_language(language)
+        await message_handler.change_language(language)
         await ctx.send(translator.translator['language_changed'].format(language=translator.languages[language]))
     except ValueError as err:
         await ctx.send(str(err))
