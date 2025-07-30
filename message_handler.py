@@ -1,21 +1,33 @@
+from message_engine import MessageBot
+from langid import classify
+
 class MesssageHandler:
     message_cooldown = 5.0  # in seconds
+    message_bot = MessageBot()
     
+    def __init__(self):
+        pass
+
     
-    def __init__(self, client):
-        self.client = client
+    # async def change_language(self, language):
+    #     if language not in self.message_bot.LANGUAGES.keys():
+    #         raise ValueError(f"Language {language} is not supported.")
+    #     self.message_bot.language = self.message_bot.LANGUAGES[language]
+    #     return f"Language changed to {self.message_bot.language[0]}."
+
+
+    async def is_message_language_supported(self, message):
+        lang, _ = classify(message.content)
+        if lang not in self.message_bot.language:
+            return False
+        return True
 
 
     async def handle_message(self, message):
-        if message.author == self.client.user:
-            return
-        
-        if message.content.startswith('!hello'):
-            await message.channel.send(f'Hello {message.author.name}!')
-        elif message.content.startswith('!help'):
-            await message.channel.send('Available commands: !hello, !help')
-        else:
-            await message.channel.send('Unknown command. Type !help for assistance.')
+        response = self.message_bot.generate_response(message.content)
+
+        return response
     
+
 
     
