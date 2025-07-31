@@ -62,7 +62,6 @@ class MessageBot:
         if language not in self.languages:
             raise ValueError(self.translator.message_handler['language_not_supported'].format(language=self.translator.languages[language]))
         self.language = language
-        self.translator.set_language(language)
         self.messages[0]["content"] = self.base_instruction
 
 

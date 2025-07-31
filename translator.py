@@ -19,7 +19,7 @@ class Translator:
                     self.translations[language_code] = json.load(file)
     
     
-    def set_language(self, language_code):
+    async def set_language(self, language_code):
         if language_code in self.translations:
             self.default_language = language_code
             self.set_translations()

@@ -27,15 +27,11 @@
             "language_not_supported": "Język {language} nie jest obsługiwany."
         },
         "discord": {
-            "commands": {
-                "change_language": {
-                    "name": "Zmień język",
-                    "description": "Zmień język, w którym bot będzie odpowiadał."
-                },
-                "help": "Pomoc",
-                "ping": "Ping",
-                "set_language": "Ustaw język"
-            }
+            "error": "Błąd",
+            "success": "Sukces",
+            "help": "Pomoc",
+            "ping": "Ping",
+            "set_language": "Ustaw język"
         }
     }
 }
