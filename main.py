@@ -41,20 +41,19 @@ async def on_ready():
     print('------')
 
 
-# @bot.event
-# async def on_message(message):
-#     # Ignore messages from the bot itself
-#     if message.author == bot.user:
-#         return
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
     
-#     if not message.content.startswith('/'):
-#         is_lang_supported = await message_handler.is_message_language_supported(message)
-#         if is_lang_supported:
-#             async with message.channel.typing():
-#                 response = await message_handler.handle_message(message)
-#                 await message.reply(response)
+    if not message.content.startswith('!'):
+        is_lang_supported = await message_handler.is_message_language_supported(message)
+        if is_lang_supported:
+            async with message.channel.typing():
+                response = await message_handler.handle_message(message)
+                await message.reply(response)
     
-#     await bot.process_commands(message)
+    await bot.process_commands(message)
     
     
 # @bot.command(name='hello', description='Sends a greeting message')
@@ -66,10 +65,13 @@ async def on_ready():
 # async def wave(ctx, to: discord.User = commands.Author):
 #     await ctx.send(f'Hello {to.mention} :wave:')
 
+
+# command for changing the language
 @bot.tree.command(
     name='lang',
     description="Change the language in which the bot will respond.",
 )
+
 @app_commands.describe(language="Target language code")
 async def change_language(interaction: discord.Interaction, language: str):
     try:
@@ -91,6 +93,18 @@ async def change_language(interaction: discord.Interaction, language: str):
             color=discord.Color.red()
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+@change_language.autocomplete("language")
+async def change_language_autocomplete(
+    interaction: discord.Interaction, current: str
+):
+    options = [
+        discord.app_commands.Choice(name=name, value=name) 
+        for name in translator.translations.keys() 
+        if current.lower() in name.lower() 
+    ]
+    return options
+
 
 
 # class MyView(discord.ui.View):
