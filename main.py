@@ -22,6 +22,7 @@ message_handler = MesssageHandler(translator=translator)
 
 GUILD_ID = int(os.getenv('GUILD_ID'))
 
+
 @bot.event
 async def on_ready():
     guild_obj = discord.Object(id=GUILD_ID)
@@ -43,27 +44,39 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    # Ignore messages from the bot itself
     if message.author == bot.user:
         return
     
-    if not message.content.startswith('!'):
-        is_lang_supported = await message_handler.is_message_language_supported(message)
-        if is_lang_supported:
-            async with message.channel.typing():
-                response = await message_handler.handle_message(message)
-                await message.reply(response)
+    # Ignore bot commands
+    if message.content.startswith('!'):
+        await bot.process_commands(message)
+        return
     
-    await bot.process_commands(message)
-    
-    
-# @bot.command(name='hello', description='Sends a greeting message')
-# async def hello(ctx):
-#     await ctx.send(f'Hello {ctx.author.name}!')
+    # Check if the message language is supported
+    is_lang_supported = await message_handler.is_message_language_supported(message)
 
-
-# @bot.command()
-# async def wave(ctx, to: discord.User = commands.Author):
-#     await ctx.send(f'Hello {to.mention} :wave:')
+    if not is_lang_supported:
+        # TODO: Get random word from the message and reply: "I don't know this"
+        return
+    
+    # Check if the bot can respond based on cooldown
+    can_respond = await message_handler.can_respond()
+    if not can_respond:
+        return
+    
+    # Generate a response if the bot is ready to respond
+    async with message.channel.typing():
+        response = await message_handler.generate_response(message)
+        if not response:
+            return
+        await message.reply(response)
+    
+    
+@bot.command()
+async def ping(ctx):
+    """A simple command to check if the bot is online."""
+    await ctx.send("Pong!")
 
 
 # command for changing the language

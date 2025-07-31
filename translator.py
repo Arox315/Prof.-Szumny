@@ -58,5 +58,7 @@ class Translator:
         self.set_discord_translations()
 
 
-t = Translator()
-print(t.message_bot["base_instruction"])
+if __name__ == "__main__":
+    # Example usage
+    t = Translator()
+    print(t.message_bot["base_instruction"])
