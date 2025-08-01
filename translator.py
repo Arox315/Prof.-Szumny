@@ -1,15 +1,21 @@
 import json
 import os
-
+import enchant
 
 class Translator:
+    enchant_dict: dict = {}
     def __init__(self, locale_folder='localization', default_language='pl'):
         self.locale_folder = locale_folder
         self.default_language = default_language
+        #self.set_default_language_dict_code()
+        #self.enchant_dict = enchant.Dict(self.default_language_dict_code)  # Default to English dictionary
+        self.set_enchant_dict()
         self.translations = {}
         self.load_translations()
         self.set_translations()
-    
+
+        self.default_language_dict_code = self.languages["codes"].get(self.default_language, self.default_language)
+   
 
     def load_translations(self):
         for filename in os.listdir(self.locale_folder):
@@ -22,6 +28,7 @@ class Translator:
     async def set_language(self, language_code):
         if language_code in self.translations:
             self.default_language = language_code
+            self.default_language_dict_code = self.languages["codes"].get(self.default_language, self.default_language)
             self.set_translations()
         else:
             if language_code not in self.languages.keys():
@@ -58,7 +65,18 @@ class Translator:
         self.set_discord_translations()
 
 
+    def set_enchant_dict(self):
+        for lang in enchant.list_languages():
+            self.enchant_dict[lang] = enchant.Dict(lang)
+
+
 if __name__ == "__main__":
     # Example usage
     t = Translator()
-    print(t.message_bot["base_instruction"])
+    #print(t.message_bot["base_instruction"])
+    #print(enchant.list_languages(),enchant.dict_exists("en_US"), enchant.dict_exists("pl_PL"))
+
+
+    d = enchant.Dict("en_US")
+    print(d.check("hello"))
+    print(d.check("intend"))

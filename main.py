@@ -57,7 +57,9 @@ async def on_message(message):
     is_lang_supported = await message_handler.is_message_language_supported(message)
 
     if not is_lang_supported:
-        # TODO: Get random word from the message and reply: "I don't know this"
+        unknown_response = await message_handler.handle_unknown_message(message)
+        if unknown_response:
+            await message.reply(unknown_response)
         return
     
     # Check if the bot can respond based on cooldown

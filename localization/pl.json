@@ -20,7 +20,14 @@
             "pl": "polski",
             "es": "hiszpański",
             "fr": "francuski",
-            "de": "niemiecki"
+            "de": "niemiecki",
+            "codes":{
+                "en": "en_US",
+                "pl": "pl_PL", 
+                "es": "es_ES",
+                "fr": "fr_FR",
+                "de": "de_DE"
+            }
         },
         "translator": {
             "language_changed": "Język został zmieniony na {language}.",
