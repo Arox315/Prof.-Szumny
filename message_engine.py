@@ -71,6 +71,15 @@ class MessageBot:
         self.messages[0]["content"] = self.base_instruction
 
 
+    def change_model(self, model_name):
+        try:
+            self.model = ModelType.get_model(model_name)
+            update_config(model=model_name)
+            self.messages[0]["content"] = self.base_instruction
+        except ValueError as err:
+            raise ValueError(self.translator.message_handler['model_not_supported'].format(model=model_name))
+
+
 if __name__ == "__main__":
     message_bot = MessageBot()
     print(message_bot.generate_response("zapraszam zainteresowanych do wojska"))

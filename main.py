@@ -121,6 +121,43 @@ async def change_language_autocomplete(
     return options
 
 
+# command for changing the model
+@bot.tree.command(
+    name='model',
+    description="Change the model used by the bot."
+)
+@app_commands.describe(model="Target model name")
+async def change_model(interaction: discord.Interaction, model: str):
+    try:
+        await message_handler.change_model(model)
+
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['model_changed'].format(
+                model=model
+            ),
+            color=discord.Color.green()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    except ValueError as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=str(err),
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+@change_model.autocomplete("model")
+async def change_model_autocomplete(
+    interaction: discord.Interaction, current: str
+):
+    options = [
+        discord.app_commands.Choice(name=model, value=model) 
+        for model in message_handler.message_bot.model.get_all_models() 
+        if current.lower() in model.lower()
+    ]
+    return options
+
 
 # class MyView(discord.ui.View):
 #     async def on_timeout(self) -> None:

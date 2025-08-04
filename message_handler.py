@@ -45,22 +45,6 @@ class MesssageHandler:
         return True
 
 
-    # async def handle_message(self, message) -> str|None:
-    #     # Check if the bot is ready to respond based on cooldown
-    #     if self.is_ready_to_respond:
-    #         self.is_ready_to_respond = False
-    #         self.last_message_time = datetime.now()
-    #         return self.generate_response(message)
-        
-    #     # Check if enough time has passed since the last message and update the state
-    #     if self.last_message_time + timedelta(seconds=self.message_cooldown) < datetime.now():
-    #         self.is_ready_to_respond = True
-    #         self.last_message_time = datetime.now()
-    #         #return self.generate_response(message)
-
-    #     return None
-
-
     async def can_respond(self) -> bool:
         self.update_cooldown()
         if self.is_ready_to_respond:
@@ -119,3 +103,10 @@ class MesssageHandler:
     def handle_unknown_word(self, word) -> str:
         response = f"Hmm, I don't know the word '{word}'. I'll have to check it out later!"
         return response
+    
+    
+    async def change_model(self, model_name) -> None:
+        try:
+            self.message_bot.change_model(model_name)
+        except ValueError as err:
+            raise ValueError(self.translator.message_handler['model_not_supported'].format(model=model_name))

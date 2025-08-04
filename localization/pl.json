@@ -31,7 +31,9 @@
         },
         "translator": {
             "language_changed": "Język został zmieniony na {language}.",
-            "language_not_supported": "Język {language} nie jest obsługiwany."
+            "language_not_supported": "Język {language} nie jest obsługiwany.",
+            "model_changed": "Model został zmieniony na {model}.",
+            "model_not_supported": "Model {model} nie jest obsługiwany."
         },
         "discord": {
             "error": "Błąd",
