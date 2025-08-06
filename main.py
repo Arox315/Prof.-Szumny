@@ -126,6 +126,7 @@ async def change_language_autocomplete(
     name='model',
     description="Change the model used by the bot."
 )
+
 @app_commands.describe(model="Target model name")
 async def change_model(interaction: discord.Interaction, model: str):
     try:
@@ -158,6 +159,21 @@ async def change_model_autocomplete(
     ]
     return options
 
+
+@bot.tree.command(
+    name='info',
+    description="Get information about the bot."
+)
+async def info(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title=translator.discord["bot_info"],
+        color=discord.Color.blue()
+    )
+    embed.add_field(name=translator.discord["info_language_header"], value=translator.languages[message_handler.message_bot.language], inline=True)
+    embed.add_field(name=translator.discord["info_model_header"], value=message_handler.message_bot.model.value, inline=True)
+    #embed.set_footer(text=f"Requested by {interaction.user.name}", icon_url=interaction.user.avatar.url)
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # class MyView(discord.ui.View):
 #     async def on_timeout(self) -> None:
