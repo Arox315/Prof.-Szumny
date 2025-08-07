@@ -53,6 +53,11 @@ async def on_message(message):
         await bot.process_commands(message)
         return
     
+    # Check the length of the message
+    if not await message_handler.is_message_length_valid(message):
+        print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Too short")
+        return
+    
     # Check if the message language is supported
     is_lang_supported = await message_handler.is_message_language_supported(message)
 
@@ -160,6 +165,7 @@ async def change_model_autocomplete(
     return options
 
 
+# command to get information about the bot
 @bot.tree.command(
     name='info',
     description="Get information about the bot."
@@ -174,6 +180,30 @@ async def info(interaction: discord.Interaction):
     #embed.set_footer(text=f"Requested by {interaction.user.name}", icon_url=interaction.user.avatar.url)
 
     await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command(
+    name='min_mess_length',
+    description="Set the minimum message length (in words) for the bot to respond."
+)
+async def set_min_message_length(
+    interaction: discord.Interaction, length: int
+):
+    try:
+        await message_handler.set_minimum_message_length(length)
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['min_message_length_changed'].format(length=length),
+            color=discord.Color.green()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    except ValueError as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=str(err),
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 # class MyView(discord.ui.View):
 #     async def on_timeout(self) -> None:

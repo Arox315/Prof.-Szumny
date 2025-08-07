@@ -8,6 +8,7 @@ import test_t
 
 class MesssageHandler:
     message_cooldown = 10.0  # in seconds
+    minimum_message_length = 5  # in words
     last_message_time = datetime.now()
     is_ready_to_respond = True
     
@@ -73,6 +74,19 @@ class MesssageHandler:
         return self.translator.enchant_dict[lang_code].check(word)
     
     
+    async def is_message_length_valid(self, message) -> bool:
+        words = message.content.split(" ")
+        if len(words) < self.minimum_message_length:
+            return False
+        return True
+
+    
+    async def set_minimum_message_length(self, length: int) -> None:
+        if length < 1:
+            raise ValueError(self.translator.message_handler['min_message_length_invalid'])
+        self.minimum_message_length = length
+
+
     async def handle_unknown_message(self, message) -> str:
         words = message.content.split()
         lang = detect(message.content)
