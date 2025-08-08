@@ -41,6 +41,11 @@ async def on_ready():
     print(f'Logged in as: {bot.user.name} - ID: {bot.user.id}')
     print('------')
 
+#TODO: Add commands to set and remove allowed channels for the bot to respond in
+#TODO: Add minimum message length, cooldown time, and allowed channels to info command
+#TODO: Add those settings to the config file
+#TODO: Add a command to reset the bot's settings to default values
+#TODO: Add a help command that lists all commands and their descriptions
 
 @bot.event
 async def on_message(message):
@@ -53,11 +58,19 @@ async def on_message(message):
         await bot.process_commands(message)
         return
     
+
+    # Check if the bot can respond based on cooldown
+    can_respond = await message_handler.can_respond()
+    if not can_respond:
+        return
+
+
     # Check the length of the message
     if not await message_handler.is_message_length_valid(message):
         print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Too short")
         return
-    
+
+
     # Check if the message language is supported
     is_lang_supported = await message_handler.is_message_language_supported(message)
 
@@ -67,10 +80,6 @@ async def on_message(message):
             await message.reply(unknown_response)
         return
     
-    # Check if the bot can respond based on cooldown
-    can_respond = await message_handler.can_respond()
-    if not can_respond:
-        return
     
     # Generate a response if the bot is ready to respond
     async with message.channel.typing():
@@ -194,6 +203,30 @@ async def set_min_message_length(
         embed = discord.Embed(
             title=translator.discord["success"],
             description=translator.translator['min_message_length_changed'].format(length=length),
+            color=discord.Color.green()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    except ValueError as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=str(err),
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command(
+    name='cooldown',
+    description="Set the cooldown time (in seconds) between bot responses."
+)
+async def set_message_cooldown(
+    interaction: discord.Interaction, cooldown: float
+):
+    try:
+        await message_handler.set_message_cooldown(cooldown)
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['cooldown_changed'].format(cooldown=cooldown),
             color=discord.Color.green()
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)

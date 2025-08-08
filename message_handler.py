@@ -11,6 +11,7 @@ class MesssageHandler:
     minimum_message_length = 5  # in words
     last_message_time = datetime.now()
     is_ready_to_respond = True
+    allowed_channels = []
     
     def __init__(self, translator: Translator = None) -> None:
         self.translator = translator or Translator(locale_folder='localization', default_language='pl')
@@ -85,6 +86,32 @@ class MesssageHandler:
         if length < 1:
             raise ValueError(self.translator.message_handler['min_message_length_invalid'])
         self.minimum_message_length = length
+
+
+    async def set_message_cooldown(self, cooldown: float) -> None:
+        if cooldown < 0.1:
+            raise ValueError(self.translator.message_handler['cooldown_invalid'])
+        self.message_cooldown = cooldown
+
+
+    async def add_allowed_channel(self, channel_name: str) -> None:
+        if channel_name not in self.allowed_channels:
+            self.allowed_channels.append(channel_name)
+
+
+    async def remove_allowed_channel(self, channel_name: str) -> None:
+        if channel_name in self.allowed_channels:
+            self.allowed_channels.remove(channel_name)
+
+
+    async def clear_allowed_channels(self) -> None:
+        self.allowed_channels.clear()
+
+
+    async def is_channel_allowed(self, channel_name: str) -> bool:
+        if channel_name in self.allowed_channels:
+            return True
+        return False
 
 
     async def handle_unknown_message(self, message) -> str:

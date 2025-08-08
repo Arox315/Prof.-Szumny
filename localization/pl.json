@@ -9,7 +9,8 @@
         "message_handler": {
             "language_changed": "Język został zmieniony na {language}.",
             "language_not_supported": "Język {language} nie jest obsługiwany.",
-            "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo."
+            "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo.",
+            "cooldown_invalid": "Czas oczekiwania musi wynosić co najmniej 0.1 sekundy."
         },
         "languages": {
             "english": "angielski",
@@ -36,7 +37,8 @@
             "model_changed": "Model został zmieniony na {model}.",
             "model_not_supported": "Model {model} nie jest obsługiwany.",
             "min_message_length_changed": "Minimalna długość wiadomości została zmieniona na {length}.",
-            "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo."
+            "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo.",
+            "cooldown_changed": "Czas oczekiwania został zmieniony na {cooldown} sekund(y/ę)."
         },
         "discord": {
             "error": "Błąd",
