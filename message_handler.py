@@ -95,17 +95,31 @@ class MesssageHandler:
 
 
     async def add_allowed_channel(self, channel_name: str) -> None:
-        if channel_name not in self.allowed_channels:
-            self.allowed_channels.append(channel_name)
+        if not channel_name:
+            raise ValueError(self.translator.message_handler['invalid_channel_name'])
+        
+        if channel_name in self.allowed_channels:
+            raise ValueError(self.translator.message_handler['channel_already_allowed'].format(channel=channel_name))
+        
+        self.allowed_channels.append(channel_name)
 
 
     async def remove_allowed_channel(self, channel_name: str) -> None:
-        if channel_name in self.allowed_channels:
-            self.allowed_channels.remove(channel_name)
+        if not channel_name:
+            raise ValueError(self.translator.message_handler['invalid_channel_name'])
+        
+        if channel_name not in self.allowed_channels:
+            raise ValueError(self.translator.message_handler['channel_not_allowed'].format(channel=channel_name))
+        
+        self.allowed_channels.remove(channel_name)
 
 
     async def clear_allowed_channels(self) -> None:
         self.allowed_channels.clear()
+
+    
+    async def get_allowed_channels(self) -> list:
+        return self.allowed_channels
 
 
     async def is_channel_allowed(self, channel_name: str) -> bool:

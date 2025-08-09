@@ -10,7 +10,10 @@
             "language_changed": "Język został zmieniony na {language}.",
             "language_not_supported": "Język {language} nie jest obsługiwany.",
             "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo.",
-            "cooldown_invalid": "Czas oczekiwania musi wynosić co najmniej 0.1 sekundy."
+            "cooldown_invalid": "Czas oczekiwania musi wynosić co najmniej 0.1 sekundy.",
+            "invalid_channel_name": "Proszę podać nazwę kanału.",
+            "channel_already_allowed": "Kanał {channel} znajduje się już na liście dozwolonych kanałów.",
+            "channel_not_allowed": "Kanał {channel} nie znajduje się na liście dozwolonych kanałów."
         },
         "languages": {
             "english": "angielski",
@@ -38,7 +41,12 @@
             "model_not_supported": "Model {model} nie jest obsługiwany.",
             "min_message_length_changed": "Minimalna długość wiadomości została zmieniona na {length}.",
             "min_message_length_invalid": "Minimalna długość wiadomości musi wynosić co najmniej 1 słowo.",
-            "cooldown_changed": "Czas oczekiwania został zmieniony na {cooldown} sekund(y/ę)."
+            "cooldown_changed": "Czas oczekiwania został zmieniony na {cooldown} sekund(y/ę).",
+            "allowed_channel_added": "Kanał {channel} został dodany do listy dozwolonych kanałów.",
+            "allowed_channel_removed": "Kanał {channel} został usunięty z listy dozwolonych kanałów.",
+            "allowed_channels_cleared": "Lista dozwolonych kanałów została wyczyszczona.",
+            "channels_list_empty": "Lista dozwolonych kanałów jest pusta."
+
         },
         "discord": {
             "error": "Błąd",
@@ -48,7 +56,10 @@
             "set_language": "Ustaw język",
             "bot_info": "Informacje o bocie",
             "info_language_header": "Język",
-            "info_model_header": "Model"
+            "info_model_header": "Model",
+            "channels_clear_info": "Czyszczenie listy kanałów",
+            "channels_list": "Dozwolone kanały"
+           
         }
     }
 }

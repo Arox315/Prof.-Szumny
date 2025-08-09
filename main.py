@@ -58,6 +58,11 @@ async def on_message(message):
         await bot.process_commands(message)
         return
     
+    # Check if message is on allowed channel
+    is_allowed_channel = await message_handler.is_channel_allowed(message.channel.name)
+    if not is_allowed_channel:
+        print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Channel not allowed")
+        return
 
     # Check if the bot can respond based on cooldown
     can_respond = await message_handler.can_respond()
@@ -195,9 +200,7 @@ async def info(interaction: discord.Interaction):
     name='min_mess_length',
     description="Set the minimum message length (in words) for the bot to respond."
 )
-async def set_min_message_length(
-    interaction: discord.Interaction, length: int
-):
+async def set_min_message_length(interaction: discord.Interaction, length: int):
     try:
         await message_handler.set_minimum_message_length(length)
         embed = discord.Embed(
@@ -219,9 +222,7 @@ async def set_min_message_length(
     name='cooldown',
     description="Set the cooldown time (in seconds) between bot responses."
 )
-async def set_message_cooldown(
-    interaction: discord.Interaction, cooldown: float
-):
+async def set_message_cooldown(interaction: discord.Interaction, cooldown: float):
     try:
         await message_handler.set_message_cooldown(cooldown)
         embed = discord.Embed(
@@ -237,6 +238,93 @@ async def set_message_cooldown(
             color=discord.Color.red()
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command(
+    name='add_channel',
+    description="Add channel to the list of allowed channels the bot can respond in."
+)
+async def add_allowed_channel(interaction: discord.Interaction, channel_name: str):
+    try:
+        await message_handler.add_allowed_channel(channel_name)
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['allowed_channel_added'].format(channel=channel_name),
+            color=discord.Color.green()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    except ValueError as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=str(err),
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command(
+    name='remove_channel',
+    description="Remove channel from the list of allowed channels the bot can respond in."
+)
+async def remove_allowed_channel(interaction: discord.Interaction, channel_name:str):
+    try:
+        await message_handler.remove_allowed_channel(channel_name)
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['allowed_channel_removed'].format(channel=channel_name),
+            color=discord.Color.green()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+    except ValueError as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=str(err),
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.tree.command(
+    name='clear_channels',
+    description="Clear all channels from the list of allowed channels."
+)
+async def clear_allowed_channels(interaction: discord.Interaction):
+    await message_handler.clear_allowed_channels()
+    embed = discord.Embed(
+        title=translator.discord["channels_clear_info"],
+        description=translator.translator['allowed_channels_cleared'],
+        color=discord.Color.blue()
+    )
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+    
+
+@bot.tree.command(
+    name='list_channels',
+    description="List all allowed channels."
+)
+async def list_allowed_channels(interaction: discord.Interaction):
+    channels = await message_handler.get_allowed_channels()
+    if channels:
+        embed=discord.Embed(
+            title=translator.discord['channels_list'],
+            description="\n".join(channel for channel in channels),
+            color=discord.Color.blue()
+        )
+    else:
+        embed=discord.Embed(
+            title=translator.discord['channels_list'],
+            description=translator.translator['channels_list_empty'],
+            color=discord.Color.blue()
+        )
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+# embed = discord.Embed(
+#         title=translator.discord["bot_info"],
+#         color=discord.Color.blue()
+#     )
+#     embed.add_field(name=translator.discord["info_language_header"], value=translator.languages[message_handler.message_bot.language], inline=True)
+#     embed.add_field(name=translator.discord["info_model_header"], value=message_handler.message_bot.model.value, inline=True)
 
 # class MyView(discord.ui.View):
 #     async def on_timeout(self) -> None:
