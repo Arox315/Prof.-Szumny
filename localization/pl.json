@@ -57,6 +57,8 @@
             "bot_info": "Informacje o bocie",
             "info_language_header": "Język",
             "info_model_header": "Model",
+            "info_cooldown": "Czas oczekiwania",
+            "info_minimum_message_length":"Minimalna długość",
             "channels_clear_info": "Czyszczenie listy kanałów",
             "channels_list": "Dozwolone kanały"
            

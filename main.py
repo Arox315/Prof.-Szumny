@@ -41,11 +41,12 @@ async def on_ready():
     print(f'Logged in as: {bot.user.name} - ID: {bot.user.id}')
     print('------')
 
-#TODO: Add commands to set and remove allowed channels for the bot to respond in
+#TODO: Add commands to set and remove allowed channels for the bot to respond in ✔️
 #TODO: Add minimum message length, cooldown time, and allowed channels to info command
 #TODO: Add those settings to the config file
 #TODO: Add a command to reset the bot's settings to default values
 #TODO: Add a help command that lists all commands and their descriptions
+
 
 @bot.event
 async def on_message(message):
@@ -59,41 +60,31 @@ async def on_message(message):
         return
     
     # Check if message is on allowed channel
-    is_allowed_channel = await message_handler.is_channel_allowed(message.channel.name)
-    if not is_allowed_channel:
+    if not await message_handler.is_channel_allowed(message.channel.name):
         print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Channel not allowed")
         return
 
     # Check if the bot can respond based on cooldown
-    can_respond = await message_handler.can_respond()
-    if not can_respond:
+    if not await message_handler.can_respond():
         return
-
 
     # Check the length of the message
     if not await message_handler.is_message_length_valid(message):
         print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Too short")
         return
 
-
     # Check if the message language is supported
-    is_lang_supported = await message_handler.is_message_language_supported(message)
-
-    if not is_lang_supported:
-        unknown_response = await message_handler.handle_unknown_message(message)
-        if unknown_response:
+    if not await message_handler.is_message_language_supported(message):
+        if unknown_response := await message_handler.handle_unknown_message(message):
             await message.reply(unknown_response)
         return
     
-    
     # Generate a response if the bot is ready to respond
     async with message.channel.typing():
-        response = await message_handler.generate_response(message)
-        if not response:
-            return
-        await message.reply(response)
-    
-    
+        if response := await message_handler.generate_response(message):
+            await message.reply(response)
+
+
 @bot.command()
 async def ping(ctx):
     """A simple command to check if the bot is online."""
@@ -189,8 +180,10 @@ async def info(interaction: discord.Interaction):
         title=translator.discord["bot_info"],
         color=discord.Color.blue()
     )
-    embed.add_field(name=translator.discord["info_language_header"], value=translator.languages[message_handler.message_bot.language], inline=True)
-    embed.add_field(name=translator.discord["info_model_header"], value=message_handler.message_bot.model.value, inline=True)
+    embed.add_field(name=translator.discord["info_language_header"], value=translator.languages[message_handler.message_bot.language], inline=False)
+    embed.add_field(name=translator.discord["info_model_header"], value=message_handler.message_bot.model.value, inline=False)
+    embed.add_field(name=translator.discord["info_cooldown"], value=message_handler.message_cooldown, inline=False)
+    embed.add_field(name=translator.discord["info_minimum_message_length"], value=message_handler.minimum_message_length, inline=False)
     #embed.set_footer(text=f"Requested by {interaction.user.name}", icon_url=interaction.user.avatar.url)
 
     await interaction.response.send_message(embed=embed, ephemeral=True)
