@@ -42,7 +42,7 @@ async def on_ready():
     print('------')
 
 #TODO: Add commands to set and remove allowed channels for the bot to respond in ✔️
-#TODO: Add minimum message length, cooldown time, and allowed channels to info command
+#TODO: Add minimum message length, cooldown time, and allowed channels to info command ✔️
 #TODO: Add those settings to the config file
 #TODO: Add a command to reset the bot's settings to default values
 #TODO: Add a help command that lists all commands and their descriptions
@@ -66,6 +66,7 @@ async def on_message(message):
 
     # Check if the bot can respond based on cooldown
     if not await message_handler.can_respond():
+        print(f"Ignored message from {message.author.name} in {message.channel.name}: {message.content} - Not ready to respond")
         return
 
     # Check the length of the message

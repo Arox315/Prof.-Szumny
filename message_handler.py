@@ -3,19 +3,20 @@ from langdetect import detect_langs, detect
 from translator import Translator
 from datetime import datetime, timedelta
 from random import choice
-import test_t
+from config import update_config, read_config
 
 
 class MesssageHandler:
-    message_cooldown = 10.0  # in seconds
-    minimum_message_length = 5  # in words
     last_message_time = datetime.now()
     is_ready_to_respond = True
-    allowed_channels = []
     
     def __init__(self, translator: Translator = None) -> None:
         self.translator = translator or Translator(locale_folder='localization', default_language='pl')
         self.message_bot = MessageBot(translator=self.translator)
+
+        self.message_cooldown = read_config().get('cooldown', 60)
+        self.minimum_message_length = read_config().get('minimum_length',5)
+        self.allowed_channels:list = read_config().get('allowed_channels',[])
     
     
     async def change_language(self, language) -> None:
@@ -86,12 +87,14 @@ class MesssageHandler:
         if length < 1:
             raise ValueError(self.translator.message_handler['min_message_length_invalid'])
         self.minimum_message_length = length
+        update_config(minimum_length=self.minimum_message_length)
 
 
     async def set_message_cooldown(self, cooldown: float) -> None:
         if cooldown < 0.1:
             raise ValueError(self.translator.message_handler['cooldown_invalid'])
         self.message_cooldown = cooldown
+        update_config(cooldown=self.message_cooldown)
 
 
     async def add_allowed_channel(self, channel_name: str) -> None:
@@ -102,6 +105,7 @@ class MesssageHandler:
             raise ValueError(self.translator.message_handler['channel_already_allowed'].format(channel=channel_name))
         
         self.allowed_channels.append(channel_name)
+        update_config(allowed_channels=self.allowed_channels)
 
 
     async def remove_allowed_channel(self, channel_name: str) -> None:
@@ -112,12 +116,14 @@ class MesssageHandler:
             raise ValueError(self.translator.message_handler['channel_not_allowed'].format(channel=channel_name))
         
         self.allowed_channels.remove(channel_name)
+        update_config(allowed_channels=self.allowed_channels)
 
 
     async def clear_allowed_channels(self) -> None:
         self.allowed_channels.clear()
-
+        update_config(allowed_channels=self.allowed_channels)
     
+
     async def get_allowed_channels(self) -> list:
         return self.allowed_channels
 
