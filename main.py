@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from message_handler import MesssageHandler
 from translator import Translator
 
+from config import create_config
 
 load_dotenv()
 
@@ -312,6 +313,33 @@ async def list_allowed_channels(interaction: discord.Interaction):
         )
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
+
+@bot.tree.command(
+    name='reset',
+    description="Reset bot's settings to default"
+)
+async def reset_settings(interaction: discord.Interaction):
+    try:
+        create_config()
+        await message_handler.reset_allowed_channels()
+        await message_handler.reset_message_cooldown()
+        await message_handler.reset_minimum_message_length()
+        await message_handler.reset_language()
+        await message_handler.reset_model()
+
+        embed = discord.Embed(
+            title=translator.discord["success"],
+            description=translator.translator['reset_to_default'],
+            color=discord.Color.green()
+        )
+    except Exception as err:
+        embed = discord.Embed(
+            title=translator.discord["error"],
+            description=translator.translator['error_description'],
+            color=discord.Color.red()
+        )
+
+    await interaction.response.send_message(embed=embed,ephemeral=True)
 
 # embed = discord.Embed(
 #         title=translator.discord["bot_info"],

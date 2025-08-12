@@ -23,6 +23,10 @@ class MesssageHandler:
         self.message_bot.change_language(language)
 
 
+    async def reset_language(self) -> None:
+        self.message_bot.reset_language()
+
+
     async def is_message_language_supported(self, message) -> bool:
         #lang, _ = classify(message.content)
         lang = detect(message.content)
@@ -90,11 +94,19 @@ class MesssageHandler:
         update_config(minimum_length=self.minimum_message_length)
 
 
+    async def reset_minimum_message_length(self) -> None:
+        self.minimum_message_length = read_config().get('minimum_length',5)
+
+
     async def set_message_cooldown(self, cooldown: float) -> None:
         if cooldown < 0.1:
             raise ValueError(self.translator.message_handler['cooldown_invalid'])
         self.message_cooldown = cooldown
         update_config(cooldown=self.message_cooldown)
+        
+
+    async def reset_message_cooldown(self) -> None:
+        self.message_cooldown = read_config().get('cooldown', 60)
 
 
     async def add_allowed_channel(self, channel_name: str) -> None:
@@ -123,6 +135,10 @@ class MesssageHandler:
         self.allowed_channels.clear()
         update_config(allowed_channels=self.allowed_channels)
     
+
+    async def reset_allowed_channels(self) -> None:
+        self.allowed_channels = read_config().get('allowed_channels',[])
+
 
     async def get_allowed_channels(self) -> list:
         return self.allowed_channels
@@ -171,3 +187,7 @@ class MesssageHandler:
             self.message_bot.change_model(model_name)
         except ValueError as err:
             raise ValueError(self.translator.message_handler['model_not_supported'].format(model=model_name))
+    
+
+    async def reset_model(self) -> None:
+        self.message_bot.reset_model()

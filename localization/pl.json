@@ -45,7 +45,9 @@
             "allowed_channel_added": "Kanał {channel} został dodany do listy dozwolonych kanałów.",
             "allowed_channel_removed": "Kanał {channel} został usunięty z listy dozwolonych kanałów.",
             "allowed_channels_cleared": "Lista dozwolonych kanałów została wyczyszczona.",
-            "channels_list_empty": "Lista dozwolonych kanałów jest pusta."
+            "channels_list_empty": "Lista dozwolonych kanałów jest pusta.",
+            "error_description": "Wystąpił błąd. Spróbuj ponownie później.",
+            "reset_to_default": "Ustawienia zostały zresetowane do domyślnych."
 
         },
         "discord": {

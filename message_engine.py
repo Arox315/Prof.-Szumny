@@ -71,13 +71,22 @@ class MessageBot:
         self.messages[0]["content"] = self.base_instruction
 
 
+    def reset_language(self):
+        self.language = read_config().get('language', 'pl')
+        self.messages[0]["content"] = self.base_instruction
+
+
     def change_model(self, model_name):
         try:
             self.model = ModelType.get_model(model_name)
             update_config(model=model_name)
-            self.messages[0]["content"] = self.base_instruction
+            # self.messages[0]["content"] = self.base_instruction
         except ValueError as err:
             raise ValueError(self.translator.message_handler['model_not_supported'].format(model=model_name))
+
+
+    def reset_model(self) -> None:
+        self.model = ModelType.get_model(read_config().get('model', 'gpt-4.1-mini')) 
 
 
 if __name__ == "__main__":
