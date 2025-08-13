@@ -48,7 +48,6 @@
             "channels_list_empty": "Lista dozwolonych kanałów jest pusta.",
             "error_description": "Wystąpił błąd. Spróbuj ponownie później.",
             "reset_to_default": "Ustawienia zostały zresetowane do domyślnych."
-
         },
         "discord": {
             "error": "Błąd",
@@ -64,6 +63,52 @@
             "channels_clear_info": "Czyszczenie listy kanałów",
             "channels_list": "Dozwolone kanały"
            
-        }
+        },
+        "commands": [
+            { 
+                "name": "/info",
+                "description":"Uzyskaj informacje o bocie."
+            },
+            {
+                "name": "/lang",
+                "description":"Zmień język, w którym bot będzie odpowiadał."
+            },
+            {
+                "name": "/model",
+                "description":"Zmień model używany przez bota."
+            },
+            {
+                "name": "/min_mess_length",
+                "description":"Ustaw minimalną długość wiadomości (w słowach), na którą bot odpowie."
+            },
+            {
+                "name": "/cooldown",
+                "description":"Ustaw czas odnowienia (w sekundach) pomiędzy odpowiedziami bota."
+            },
+            {
+                "name": "/add_channel",
+                "description":"Dodaj kanał do listy kanałów, na których bot może odpowiadać."
+            },
+            {
+                "name": "/remove_channel",
+                "description":"Usuń kanał z listy kanałów, na których bot może odpowiadać."
+            },
+            {
+                "name": "/clear_channels",
+                "description":"Wyczyść wszystkie kanały z listy dozwolonych kanałów."
+            },
+            {
+                "name": "/list_channels",
+                "description":"Wyświetl wszystkie dozwolone kanały."
+            },
+            {
+                "name": "/reset",
+                "description":"Przywróć ustawienia domyślne bota."
+            },
+            {
+                "name": "/help",
+                "description":"Wyświetl wszystkie komendy bota."
+            }
+        ]
     }
 }

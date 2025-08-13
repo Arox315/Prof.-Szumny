@@ -44,8 +44,8 @@ async def on_ready():
 
 #TODO: Add commands to set and remove allowed channels for the bot to respond in ✔️
 #TODO: Add minimum message length, cooldown time, and allowed channels to info command ✔️
-#TODO: Add those settings to the config file
-#TODO: Add a command to reset the bot's settings to default values
+#TODO: Add those settings to the config file ✔️
+#TODO: Add a command to reset the bot's settings to default values ✔️
 #TODO: Add a help command that lists all commands and their descriptions
 
 
@@ -98,7 +98,6 @@ async def ping(ctx):
     name='lang',
     description="Change the language in which the bot will respond.",
 )
-
 @app_commands.describe(language="Target language code")
 async def change_language(interaction: discord.Interaction, language: str):
     try:
@@ -120,7 +119,6 @@ async def change_language(interaction: discord.Interaction, language: str):
             color=discord.Color.red()
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
-
 @change_language.autocomplete("language")
 async def change_language_autocomplete(
     interaction: discord.Interaction, current: str
@@ -138,7 +136,6 @@ async def change_language_autocomplete(
     name='model',
     description="Change the model used by the bot."
 )
-
 @app_commands.describe(model="Target model name")
 async def change_model(interaction: discord.Interaction, model: str):
     try:
@@ -159,7 +156,6 @@ async def change_model(interaction: discord.Interaction, model: str):
             color=discord.Color.red()
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
-
 @change_model.autocomplete("model")
 async def change_model_autocomplete(
     interaction: discord.Interaction, current: str
@@ -316,7 +312,7 @@ async def list_allowed_channels(interaction: discord.Interaction):
 
 @bot.tree.command(
     name='reset',
-    description="Reset bot's settings to default"
+    description="Reset bot's settings to default."
 )
 async def reset_settings(interaction: discord.Interaction):
     try:
@@ -340,6 +336,23 @@ async def reset_settings(interaction: discord.Interaction):
         )
 
     await interaction.response.send_message(embed=embed,ephemeral=True)
+
+
+@bot.tree.command(
+    name='help',
+    description="List all of the bot's commands."
+)
+async def help(interaction:discord.Interaction):
+    embed = discord.Embed(
+        title=translator.discord["help"],
+        color=discord.Color.blue()
+    )
+
+    for command in translator.commands:
+        embed.add_field(name=command["name"], value=command["description"], inline=False)
+    
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
 
 # embed = discord.Embed(
 #         title=translator.discord["bot_info"],

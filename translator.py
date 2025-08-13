@@ -57,12 +57,17 @@ class Translator:
         self.discord = self.translations[self.default_language]["translation"].get('discord', {})
 
 
+    def set_commands_translations(self):
+        self.commands = self.translations[self.default_language]["translation"].get('commands', {})
+
+
     def set_translations(self):
         self.set_message_bot_translations()
         self.set_messgage_handler_translations()
         self.set_languages_translations()
         self.set_translator_translations()
         self.set_discord_translations()
+        self.set_commands_translations()
 
 
     def set_enchant_dict(self):
