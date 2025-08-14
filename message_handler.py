@@ -178,7 +178,8 @@ class MesssageHandler:
 
 
     def handle_unknown_word(self, word) -> str:
-        response = f"Hmm, I don't know the word '{word}'. I'll have to check it out later!"
+        response:str = choice(self.translator.message_handler["unknown_message_responses"])
+        response = response.format(word=word)
         return response
     
     

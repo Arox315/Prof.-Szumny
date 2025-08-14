@@ -13,7 +13,13 @@
             "cooldown_invalid": "Czas oczekiwania musi wynosić co najmniej 0.1 sekundy.",
             "invalid_channel_name": "Proszę podać nazwę kanału.",
             "channel_already_allowed": "Kanał {channel} znajduje się już na liście dozwolonych kanałów.",
-            "channel_not_allowed": "Kanał {channel} nie znajduje się na liście dozwolonych kanałów."
+            "channel_not_allowed": "Kanał {channel} nie znajduje się na liście dozwolonych kanałów.",
+            "unknown_message_responses":[
+                "Hmm... {word}? Tego nie znam, będę musiał to sobie później sprawdzić.",
+                "Hmm... {word}? A tego to nie znam, to sobie później sprawdzę.",
+                "{word}... Tego to nie znam, to będę musiał sobie później sprawdzić.",
+                "{word}... Hmm... A to fajne ale nie znam, to będę musiał sobie później sprawdzić."
+            ]
         },
         "languages": {
             "english": "angielski",
