@@ -42,7 +42,8 @@ class MessageBot:
         model = read_config().get('model', 'gpt-4.1-mini')
 
         self.translator = translator or Translator(locale_folder='localization', default_language=default_language)
-        self.base_instruction = self.translator.message_bot['base_instruction']
+        #self.base_instruction = self.translator.message_bot['base_instruction']
+        self.load_instruction_from_file()
         self.languages = self.translator.translations.keys()
 
         self.client = OpenAI(api_key=OPENAI_API_KEY)
@@ -87,6 +88,13 @@ class MessageBot:
 
     def reset_model(self) -> None:
         self.model = ModelType.get_model(read_config().get('model', 'gpt-4.1-mini')) 
+
+
+    def load_instruction_from_file(self):
+        instruction_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),self.translator.locale_folder)
+        instruction_path = os.path.join(instruction_path, self.translator.message_bot['instruction_path'])
+        with open(instruction_path, 'r', encoding="UTF-8") as instruction_file:
+            self.base_instruction = instruction_file.read()
 
 
 if __name__ == "__main__":

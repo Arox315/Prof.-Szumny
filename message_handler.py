@@ -68,7 +68,7 @@ class MesssageHandler:
 
 
     async def generate_response(self, message) -> str:
-        response = f"debug: {message.content}\n{message.created_at}"  # For debugging purposes, replace with actual response generation
+        response = f"debug: {message.content}\n{message.created_at}\nPrompt: {self.message_bot.base_instruction}"  # For debugging purposes, replace with actual response generation
         #response = self.message_bot.generate_response(message.content)
         return response
 
