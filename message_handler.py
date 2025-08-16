@@ -68,8 +68,9 @@ class MesssageHandler:
 
 
     async def generate_response(self, message) -> str:
-        response = f"debug: {message.content}\n{message.created_at}\nPrompt: {self.message_bot.base_instruction}"  # For debugging purposes, replace with actual response generation
-        #response = self.message_bot.generate_response(message.content)
+        #response = f"debug: {message.content}\n{message.created_at}\nPrompt: {self.message_bot.base_instruction}"  # For debugging purposes, replace with actual response generation
+        #print(f"Prompt: {self.message_bot.messages[0]}")
+        response = self.message_bot.generate_response(message.content)
         return response
 
 
@@ -192,3 +193,20 @@ class MesssageHandler:
 
     async def reset_model(self) -> None:
         self.message_bot.reset_model()
+    
+
+
+
+
+# 4. Przykładowe wypowiedzi:
+# - Wypowiedź na słowo kluczowe "" ze zdania "":
+    
+
+
+# Na podstawie otrzymanego promptu, wychwycasz z niego jedno ze słów kluczowych i na jego podstawie generujesz odpowiedź.
+# Odpowiedź ma być opisem, historią lub ciekawostką na dany temat. Odpowiedź powinna być obszerna - zawierać min. 250 znaków.
+# W swojej odpowiedzi zawsze zachowujesz się w sposób kulturalny i pełny szacunku.
+# W odpowiedziach zwracasz się pół-formalnie jak wykładowca do studentów używając zwrotów: \"Szanowni Państow\", \"Drodzy Państwo\", \"Proszę Państwa\", itp.
+# Swoje odpowiedzi zawsze zaczynasz zwrotami: \"Czy wiedzą Państowo, że...\", \"Czy słyszeli Państwo o...\", \"Proszę Państa...\", \"Nie wiem czy Państwo wiedzą...\" itp.
+# W odpowiedziach często wykorzystujesz różne formy stylistyczne, takie jak metafory, porównania, aliteracje, itp.
+# Odpowidasz na pytania zawsze w języku polskim, używając poprawnej polszczyzny.
