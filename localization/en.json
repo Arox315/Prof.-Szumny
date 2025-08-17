@@ -1,0 +1,120 @@
+{
+    "language": "en",
+    "translation": {
+        "message_bot": {
+            "instruction_path":"prompt_en.txt",
+            "error": "An error has occurred. Please try again later.",
+            "language_not_supported": "The language {language} is not supported."
+        },
+        "message_handler": {
+            "language_changed": "The language has been changed to {language}.",
+            "language_not_supported": "The language {language} is not supported.",
+            "min_message_length_invalid": "The minimum length of a message must be at least 1 word.",
+            "cooldown_invalid": "The waiting time must be at least 0.1 seconds.",
+            "invalid_channel_name": "Please enter the channel name.",
+            "channel_already_allowed": "The channel {channel} is already on the list of allowed channels.",
+            "channel_not_allowed": "The channel {channel} is not on the list of allowed channels.",
+            "unknown_message_responses":[
+                "Hmm... {word}? I don't know that one, I'll have to look it up later.",
+                "Hmm... {word}? I don't know that one, I'll check it later..",
+                "{word}... I don't know that one, I'll have to look it up later..",
+                "{word}... Hmm... That's cool, but I don't know it, so I'll have to look it up later."
+            ]
+        },
+        "languages": {
+            "english": "English",
+            "polish": "Polish",
+            "spanish": "Spanish",
+            "french": "French",
+            "german": "German",
+            "en": "English",
+            "pl": "Polish",
+            "es": "Spanish",
+            "fr": "French",
+            "de": "German",
+            "codes":{
+                "en": "en_US",
+                "pl": "pl_PL", 
+                "es": "es_ES",
+                "fr": "fr_FR",
+                "de": "de_DE"
+            }
+        },
+        "translator": {
+            "language_changed": "The language has been changed to {language}.",
+            "language_not_supported": "The language {language} is not supported.",
+            "model_changed": "The model has been changed to {model}.",
+            "model_not_supported": "Model {model} is not supported.",
+            "min_message_length_changed": "The minimum message length has been changed to {length}.",
+            "min_message_length_invalid": "The minimum length of a message must be at least 1 word.",
+            "cooldown_changed": "The waiting time has been changed to {cooldown} second(s).",
+            "allowed_channel_added": "The channel {channel} has been added to the list of allowed channels.",
+            "allowed_channel_removed": "The channel {channel} has been removed from the list of allowed channels.",
+            "allowed_channels_cleared": "The list of allowed channels has been cleared.",
+            "channels_list_empty": "The list of allowed channels is empty.",
+            "error_description": "An error has occurred. Please try again later.",
+            "reset_to_default": "The settings have been reset to default."
+        },
+        "discord": {
+            "error": "Error",
+            "success": "Success",
+            "help": "Help",
+            "ping": "Ping",
+            "set_language": "Set language",
+            "bot_info": "Information about the bot",
+            "info_language_header": "Language",
+            "info_model_header": "Model",
+            "info_cooldown": "Cooldown",
+            "info_minimum_message_length":"Minimum length",
+            "channels_clear_info": "Clearing the channel list",
+            "channels_list": "Allowed channels"
+           
+        },
+        "commands": [
+            { 
+                "name": "/info",
+                "description":"Get information about the bot."
+            },
+            {
+                "name": "/lang",
+                "description":"Change the language in which the bot will respond."
+            },
+            {
+                "name": "/model",
+                "description":"Change the model used by the bot."
+            },
+            {
+                "name": "/min_mess_length",
+                "description":"Set the minimum message length (in words) for the bot to respond."
+            },
+            {
+                "name": "/cooldown",
+                "description":"Set the cooldown time (in seconds) between bot responses."
+            },
+            {
+                "name": "/add_channel",
+                "description":"Add channel to the list of allowed channels the bot can respond in."
+            },
+            {
+                "name": "/remove_channel",
+                "description":"Remove channel from the list of allowed channels the bot can respond in."
+            },
+            {
+                "name": "/clear_channels",
+                "description":"Clear all channels from the list of allowed channels."
+            },
+            {
+                "name": "/list_channels",
+                "description":"List all allowed channels."
+            },
+            {
+                "name": "/reset",
+                "description":"Reset bot's settings to default."
+            },
+            {
+                "name": "/help",
+                "description":"List all of the bot's commands."
+            }
+        ]
+    }
+}
