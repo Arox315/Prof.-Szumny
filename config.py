@@ -90,13 +90,3 @@ def __str_to_list(string: str) -> list:
 
 if __name__ == "__main__":
     create_config()
-
-    # config_data = read_config()
-    # print(config_data['allowed_channels'],type(config_data['allowed_channels']))
-    # print("Language: ", config_data['language'])
-    # print("Model: ", config_data['model'])
-
-    # update_config(language='en', model='gpt-4.1')
-    # config_data = read_config()
-    # print("Language: ", config_data['language'])
-    # print("Model: ", config_data['model'])

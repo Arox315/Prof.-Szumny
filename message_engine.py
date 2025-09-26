@@ -42,7 +42,6 @@ class MessageBot:
         model = read_config().get('model', 'gpt-4.1-mini')
 
         self.translator = translator or Translator(locale_folder='localization', default_language=default_language)
-        #self.base_instruction = self.translator.message_bot['base_instruction']
         self.load_instruction_from_file()
         self.languages = self.translator.translations.keys()
 
@@ -81,7 +80,6 @@ class MessageBot:
         try:
             self.model = ModelType.get_model(model_name)
             update_config(model=model_name)
-            # self.messages[0]["content"] = self.base_instruction
         except ValueError as err:
             raise ValueError(self.translator.message_handler['model_not_supported'].format(model=model_name))
 

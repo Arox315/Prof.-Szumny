@@ -21,32 +21,13 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 translator = Translator(locale_folder='localization', default_language='pl')
 message_handler = MesssageHandler(translator=translator)
 
-GUILD_ID = int(os.getenv('GUILD_ID'))
-
 
 @bot.event
 async def on_ready():
-    guild_obj = discord.Object(id=GUILD_ID)
-
-    # bot.tree.clear_commands(guild=None)               
-    # bot.tree.clear_commands(guild=guild_obj)          
-
-    # bot.tree.remove_command("lang", type=discord.AppCommandType.chat_input, guild=None)      
-    # bot.tree.remove_command("lang", type=discord.AppCommandType.chat_input, guild=guild_obj) 
-
-    # await bot.tree.sync(guild=None)                
-    # await bot.tree.sync(guild=guild_obj) 
-    
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} global command(s)")
     print(f'Logged in as: {bot.user.name} - ID: {bot.user.id}')
     print('------')
-
-#TODO: Add commands to set and remove allowed channels for the bot to respond in ✔️
-#TODO: Add minimum message length, cooldown time, and allowed channels to info command ✔️
-#TODO: Add those settings to the config file ✔️
-#TODO: Add a command to reset the bot's settings to default values ✔️
-#TODO: Add a help command that lists all commands and their descriptions
 
 
 @bot.event
@@ -352,34 +333,6 @@ async def help(interaction:discord.Interaction):
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     
     await interaction.response.send_message(embed=embed, ephemeral=True)
-
-
-# embed = discord.Embed(
-#         title=translator.discord["bot_info"],
-#         color=discord.Color.blue()
-#     )
-#     embed.add_field(name=translator.discord["info_language_header"], value=translator.languages[message_handler.message_bot.language], inline=True)
-#     embed.add_field(name=translator.discord["info_model_header"], value=message_handler.message_bot.model.value, inline=True)
-
-# class MyView(discord.ui.View):
-#     async def on_timeout(self) -> None:
-#         # Step 2
-#         for item in self.children:
-#             item.disabled = True
-
-#         # Step 3
-#         await self.message.edit(view=self)
-
-#     @discord.ui.button(label='Example')
-#     async def example_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-#         await interaction.response.send_message('Hello!', ephemeral=True)
-
-# @bot.command()
-# async def timeout_example(ctx):
-#     """An example to showcase disabling buttons on timing out"""
-#     view = MyView()
-#     # Step 1
-#     view.message = await ctx.send('Press me!', view=view)
 
 
 if __name__ == "__main__":
