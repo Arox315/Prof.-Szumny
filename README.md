@@ -17,7 +17,7 @@ The bot responds to random eligible messages in an interval. Every setting can b
 6. In discord setup bot to your liking with commands. In a text channel run `/help` to see what commands the bot has to offer
 
 ## Adding new language
-To add new language for the bot, download desired language's Hunspell dictionary then:
+To add new language download desired language's Hunspell dictionary then:
 * In `localization` folder create new `.json` file named by a language code e.g. `de.json` for Geramn. Copy the contents of an existing localization file and translate it to desired language.
 * Afterwards, in the same folder create `prompt_<language-code>.txt` (e.g. `prompt_de.txt`) file with a initial prompt for the LLM. You can copy the contents of an existing localization prompt and translate it to desired language.
 * In discord run `/lang` command to set the new language.
